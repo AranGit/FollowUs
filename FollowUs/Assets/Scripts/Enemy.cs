@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Avatar
 {
-    // Start is called before the first frame update
-    void Start()
+    public Enemy(AvatarType avatarType, string spriteName) : base(AvatarStatus.Enemy, avatarType, spriteName)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        Heart = Random.Range(1, 11);
+        Sword = Random.Range(1, 11);
+        Shield = Random.Range(1, 11);
     }
 }

@@ -2,17 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hero : MonoBehaviour
+public class Hero : Avatar
 {
-    // Start is called before the first frame update
-    void Start()
+    private Transform _nextTranform;
+
+    public Hero(AvatarStatus avtarStatus, AvatarType avatarType, string spriteName) : base(avtarStatus, avatarType, spriteName)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetNextTranform(Transform value)
     {
-        
+        _nextTranform = value;
+    }
+
+    public Transform GetNextTranform()
+    {
+        return _nextTranform;
+    }
+    
+    public void spawnAvatar(AvatarStatus avtarStatus, Transform currentTransform)
+    {
+        SetAvatarStatus(avtarStatus);
+        SetNextTranform(currentTransform);
+    }
+
+    private void Awake()
+    {
+        Heart = Random.Range(1, 11);
+        Sword = Random.Range(1, 11);
+        Shield = Random.Range(1, 11);
     }
 }
