@@ -4,33 +4,50 @@ using UnityEngine;
 
 public class Hero : Avatar
 {
-    private Transform _nextTranform;
+    public enum Direction { Top, Bottom, Left, Right };
+    private Vector3 _nextPosition;
+    private Direction _currentDirection;
+    private bool _isDead = false;
 
-    public Hero(AvatarStatus avtarStatus, AvatarType avatarType, string spriteName) : base(avtarStatus, avatarType, spriteName)
+    public bool IsDead()
     {
-
+        return _isDead;
     }
-
-    public void SetNextTranform(Transform value)
-    {
-        _nextTranform = value;
-    }
-
-    public Transform GetNextTranform()
-    {
-        return _nextTranform;
-    }
-    
-    public void spawnAvatar(AvatarStatus avtarStatus, Transform currentTransform)
-    {
-        SetAvatarStatus(avtarStatus);
-        SetNextTranform(currentTransform);
-    }
-
-    private void Awake()
+    public void initialHero(AvatarStatus avtarStatus, AvatarType avatarType, string name, Direction direction)
     {
         Heart = Random.Range(1, 11);
         Sword = Random.Range(1, 11);
         Shield = Random.Range(1, 11);
+        Name = name;
+        SetAvatarStatus(avtarStatus);
+        SetAvatarType(avatarType);
+        _currentDirection = direction;
+    }
+    public void SetDirection(Direction value)
+    {
+        _currentDirection = value;
+    }
+
+    public Direction GetDirection()
+    {
+        return _currentDirection;
+    }
+    public void SetNextPosition(Vector3 value)
+    {
+        _nextPosition = value;
+    }
+
+    public Vector3 GetNextTranform()
+    {
+        return _nextPosition;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("OnTriggerEnter2D");
+        if (collision.gameObject.name == "border" && GetAvatarStatus() == AvatarStatus.Hero_leader)
+        {
+            _isDead = true;
+        }
     }
 }

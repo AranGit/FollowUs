@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
 public class Avatar : MonoBehaviour
 {
-    public enum AvatarStatus { Hero_leader, Hero_following, Enemy };
+    public enum AvatarStatus { Hero_leader, Hero_following, Hero_Unknow, Enemy };
     public enum AvatarType { Red, Green, Blue };
     private int _heart;
     private int _sword;
     private int _shield;
 
-    private string _spriteName;
+    private string _name;
     private AvatarStatus _avtarStatus;
     private AvatarType _avatarType;
 
@@ -30,6 +29,13 @@ public class Avatar : MonoBehaviour
         get { return _shield; }
         set { _shield = value; }
     }
+
+    public string Name
+    {
+        get { return _name; }
+        set { _name = value; }
+    }
+
     public void SetAvatarStatus(AvatarStatus value)
     {
         _avtarStatus = value;
@@ -45,10 +51,8 @@ public class Avatar : MonoBehaviour
         return _avatarType;
     }
 
-    public Avatar(AvatarStatus avtarStatus, AvatarType avatarType, string spriteName)
+    public void SetAvatarType(AvatarType value)
     {
-        this._avtarStatus = avtarStatus;
-        this._spriteName = spriteName;
-        this._avatarType = avatarType;
+        _avatarType = value;
     }
 }

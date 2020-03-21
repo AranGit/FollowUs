@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Enemy : Avatar
 {
-    public Enemy(AvatarType avatarType, string spriteName) : base(AvatarStatus.Enemy, avatarType, spriteName)
-    {
-
-    }
-
-    private void Awake()
+    public void initialEnemy(AvatarType avatarType, string name)
     {
         Heart = Random.Range(1, 11);
         Sword = Random.Range(1, 11);
         Shield = Random.Range(1, 11);
+        Name = name;
+        SetAvatarStatus(AvatarStatus.Enemy);
+        SetAvatarType(avatarType);
     }
 }
