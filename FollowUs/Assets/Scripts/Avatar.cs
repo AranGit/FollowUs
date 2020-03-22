@@ -98,9 +98,9 @@ public class Avatar : MonoBehaviour
     public float GotDamage(float AvatarSword, AvatarType avatarType)
     {
         var damage = (AvatarSword * DamageFromType(avatarType)) - Shield;
-        if (damage < 0 )
+        if (damage <= 0 )
         {
-            damage = 0;
+            damage = 1;
         }
         Debug.Log("Damage !! : " + damage);
         _heart -= damage;

@@ -57,7 +57,6 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("Start Game");
                 point = 0;
                 ui_controller.SetPoints(point);
                 ui_controller.start_text.text = "";
@@ -495,18 +494,22 @@ public class GameController : MonoBehaviour
     IEnumerator SetFire()
     {
         var fire = Instantiate(Resources.Load("Prefabs/Fire") as GameObject);
-        fire.transform.position = new Vector3(Random.Range(-4, 4), Random.Range(-3.5f, 3.5f), 0);
+        var leader = heros.Single(hero => hero.GetComponent<Hero>().GetAvatarStatus() == Avatar.AvatarStatus.Hero_leader);
+        fire.SetActive(false);
+        do
+        {
+            fire.transform.position = new Vector3(Random.Range(-4, 4), Random.Range(-3.5f, 3.5f), 0);
+        } while (Vector3.Distance(fire.transform.position, leader.transform.position) < 2);
+        fire.SetActive(true);
         yield return new WaitForSeconds(3.0f);
         Destroy(fire);
     }
 
     IEnumerator Combat()
     {
-
-        yield return new WaitForSeconds(0.5f);
         CombatResualt resualt = InBattle();
         Debug.Log("Resualt battle: " + resualt);
-
+        yield return new WaitForSeconds(0.5f);
 
         if (resualt == CombatResualt.Win)
         {
@@ -519,7 +522,10 @@ public class GameController : MonoBehaviour
                         leader.GetComponent<Hero>().GetAvatarType()
                     );
             _speed += 1;
-            point += leader.GetComponent<Hero>().Heart;
+            foreach (var hero in heros)
+            {
+                point += hero.GetComponent<Hero>().Heart;
+            }
             ui_controller.SetPoints(point);
             Destroy(_currentEnemies);
             _currentEnemies = null;
