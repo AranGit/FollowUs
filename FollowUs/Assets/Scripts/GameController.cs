@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour
                 ui_controller.SetPoints(point);
                 ui_controller.start_text.text = "";
                 ui_controller.SetActivePanelEnemy(false);
-
+                StartCoroutine(SetFire());
                 StartCoroutine(StartGame());
             }
         }
@@ -83,6 +83,7 @@ public class GameController : MonoBehaviour
                 (_newHero == null && _currentEnemies == null))
             {
                 SpawnAvartar();
+                StartCoroutine(SetFire());
                 _timeForReSpawn = 0f;
             }
 
@@ -491,12 +492,21 @@ public class GameController : MonoBehaviour
         }
     }
 
+    IEnumerator SetFire()
+    {
+        var fire = Instantiate(Resources.Load("Prefabs/Fire") as GameObject);
+        fire.transform.position = new Vector3(Random.Range(-4, 4), Random.Range(-3.5f, 3.5f), 0);
+        yield return new WaitForSeconds(3.0f);
+        Destroy(fire);
+    }
+
     IEnumerator Combat()
     {
+
+        yield return new WaitForSeconds(0.5f);
         CombatResualt resualt = InBattle();
         Debug.Log("Resualt battle: " + resualt);
 
-        yield return new WaitForSeconds(0.5f);
 
         if (resualt == CombatResualt.Win)
         {
@@ -545,6 +555,10 @@ public class GameController : MonoBehaviour
         ui_controller.start_text.text = "You lose. Please spacebar to play again";
         heros = new List<GameObject>();
         enemies = new List<GameObject>();
+        if (_newHero)
+            Destroy(_newHero);
+        if (_currentEnemies)
+            Destroy(_currentEnemies);
         _newHero = null;
         _currentEnemies = null;
         _speed = 5f;

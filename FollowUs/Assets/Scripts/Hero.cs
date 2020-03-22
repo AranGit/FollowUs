@@ -67,11 +67,14 @@ public class Hero : Avatar
             _isDead = true;
         }
 
-        
+        if (collision.gameObject.tag == "Fire" && GetAvatarStatus() == AvatarStatus.Hero_leader)
+        {
+            _isDead = true;
+            Destroy(collision.gameObject);
+        }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.name);
         //Trigger by leader
         if (collision.gameObject.GetComponent<Hero>())
         {
