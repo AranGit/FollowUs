@@ -8,7 +8,7 @@ public class Enemy : Avatar
     {
         Heart = Random.Range(1, 11);
         Sword = Random.Range(1, 11);
-        Shield = Random.Range(1, 11);
+        Shield = Random.Range(1, 6);
         Name = name;
         SetAvatarStatus(AvatarStatus.Enemy);
         SetAvatarType(avatarType);

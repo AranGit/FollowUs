@@ -8,10 +8,20 @@ public class Hero : Avatar
     private Vector3 _nextPosition;
     private Direction _currentDirection;
     private bool _isDead = false;
+    private bool _fighting = false;
+    public bool Fighting
+    {
+        get { return _fighting; }
+        set { _fighting = value; }
+    }
 
     public bool IsDead()
     {
         return _isDead;
+    }
+    public void HeroDead()
+    {
+        _isDead = true;
     }
     public void initialHero(AvatarStatus avtarStatus, AvatarType avatarType, string name, Direction direction)
     {
@@ -37,17 +47,42 @@ public class Hero : Avatar
         _nextPosition = value;
     }
 
-    public Vector3 GetNextTranform()
+    public Vector3 GetNextPosition()
     {
         return _nextPosition;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerEnter2D");
+        //Trigger by wall
         if (collision.gameObject.name == "border" && GetAvatarStatus() == AvatarStatus.Hero_leader)
         {
+            if (GetDirection() == Direction.Top || GetDirection() == Direction.Bottom)
+            {
+                SetDirection((Direction)Random.Range(2, 3));
+            } else if (GetDirection() == Direction.Left || GetDirection() == Direction.Right)
+            {
+                SetDirection((Direction)Random.Range(0, 1));
+            }
             _isDead = true;
+        }
+
+        
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
+        //Trigger by leader
+        if (collision.gameObject.GetComponent<Hero>())
+        {
+            if (collision.gameObject.GetComponent<Hero>().GetAvatarStatus() == AvatarStatus.Hero_leader &&
+                GetAvatarStatus() == AvatarStatus.Hero_Unknow)
+            {
+                SetAvatarStatus(AvatarStatus.Hero_following);
+            }
+        } else if (collision.gameObject.tag == "Enemy")
+        {
+            _fighting = true;
         }
     }
 }
