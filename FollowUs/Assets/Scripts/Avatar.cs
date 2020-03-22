@@ -103,7 +103,7 @@ public class Avatar : MonoBehaviour
             damage = 1;
         }
         Debug.Log("Damage !! : " + damage);
-        _heart -= damage;
+        Heart -= damage;
 
         return damage;
     }

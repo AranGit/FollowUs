@@ -65,6 +65,6 @@ public class UIController : MonoBehaviour
 
     public void SetPoints(float point)
     {
-        points.text = point.ToString();
+        points.text = ((int)point).ToString();
     }
 }
